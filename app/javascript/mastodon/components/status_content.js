@@ -7,6 +7,7 @@ import classnames from 'classnames';
 import PollContainer from 'mastodon/containers/poll_container';
 import Icon from 'mastodon/components/icon';
 import { autoPlayGif, languages as preloadedLanguages, translationEnabled } from 'mastodon/initial_state';
+import IconetFrame from "./iconetFrame";
 
 const MAX_HEIGHT = 706; // 22px * 32 (+ 2px padding at the top)
 
@@ -244,6 +245,13 @@ class StatusContent extends React.PureComponent {
     const poll = !!status.get('poll') && (
       <PollContainer pollId={status.get('poll')} />
     );
+
+
+    if (status.get('iconet')) {
+      return (
+        <IconetFrame contentData={status.get('iconet')} />
+      );
+    }
 
     if (status.get('spoiler_text').length > 0) {
       let mentionsPlaceholder = '';

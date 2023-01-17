@@ -1,0 +1,12 @@
+embedded-experience {
+  width: calc(100% - 4em);
+  height: 15em;
+
+  margin: 2em;
+  padding: 0.5em;
+  border: solid 1px;
+  flex-direction: column;
+  background: whitesmoke;
+  overflow: auto;
+  resize: both;
+}
