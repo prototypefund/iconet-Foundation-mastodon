@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_04_133904) do
+ActiveRecord::Schema.define(version: 2023_01_18_112450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -442,7 +442,6 @@ ActiveRecord::Schema.define(version: 2022_11_04_133904) do
     t.datetime "last_status_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
     t.index ["account_id", "tag_id"], name: "index_featured_tags_on_account_id_and_tag_id", unique: true
     t.index ["tag_id"], name: "index_featured_tags_on_tag_id"
   end
@@ -940,6 +939,7 @@ ActiveRecord::Schema.define(version: 2022_11_04_133904) do
     t.datetime "edited_at"
     t.boolean "trendable"
     t.bigint "ordered_media_attachment_ids", array: true
+    t.jsonb "iconet"
     t.index ["account_id", "id", "visibility", "updated_at"], name: "index_statuses_20190820", order: { id: :desc }, where: "(deleted_at IS NULL)"
     t.index ["account_id"], name: "index_statuses_on_account_id"
     t.index ["deleted_at"], name: "index_statuses_on_deleted_at", where: "(deleted_at IS NOT NULL)"
