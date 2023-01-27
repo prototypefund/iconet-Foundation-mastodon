@@ -126,6 +126,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
         conversation: conversation_from_uri(@object['conversation']),
         media_attachment_ids: process_attachments.take(4).map(&:id),
         poll: process_poll,
+        iconet: @status_parser.iconet,
       }
     end
   end

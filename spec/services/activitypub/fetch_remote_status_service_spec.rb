@@ -42,6 +42,27 @@ RSpec.describe ActivityPub::FetchRemoteStatusService, type: :service do
       end
     end
 
+    context 'with iconet Note object' do
+      let(:object) do
+        {
+          '@context': 'https://www.w3.org/ns/activitystreams',
+          id: "https://foo.bar/@foo/1234",
+          type: 'Note',
+          content: 'Lorem ipsum',
+          attributedTo: ActivityPub::TagManager.instance.uri_for(sender),
+          'https://iconet-foundation.org/ns#iconet': {iconetKey: "iconet data"},
+        }
+      end
+
+      it 'creates status' do
+        status = sender.statuses.first
+
+        expect(status).to_not be_nil
+        expect(status.text).to eq 'Lorem ipsum'
+        expect(status.iconet).to eq({"iconetKey": "iconet data"}.to_json)
+      end
+    end
+
     context 'with Video object' do
       let(:object) do
         {

@@ -76,7 +76,7 @@ class ActivityPub::Activity
   end
 
   def unsupported_object_type?
-    @object.is_a?(String) || !(supported_object_type? || converted_object_type?)
+    @object.is_a?(String) || !(supported_object_type? || converted_object_type? || hasIconetField?)
   end
 
   def supported_object_type?
@@ -85,6 +85,11 @@ class ActivityPub::Activity
 
   def converted_object_type?
     equals_or_includes_any?(@object['type'], CONVERTED_TYPES)
+  end
+
+  def hasIconetField?
+    # TODO validate iconet field
+    @object['https://iconet-foundation.org/ns#iconet'].present?
   end
 
   def delete_arrived_first?(uri)

@@ -94,6 +94,10 @@ class ActivityPub::Parser::StatusParser
     end
   end
 
+  def iconet
+    @object['https://iconet-foundation.org/ns#iconet']
+  end
+
   private
 
   def audience_to
