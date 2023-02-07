@@ -246,10 +246,11 @@ class StatusContent extends React.PureComponent {
       <PollContainer pollId={status.get('poll')} />
     );
 
-
-    if (status.get('iconet')) {
+    const iconet  = status.get('iconet');
+    if (iconet && JSON.parse(iconet)?.content?.some(content => content.packetType !== 'application/mastodontoot')) {
+      // Render the IconetFrame if the post format is non-native
       return (
-        <IconetFrame contentData={status.get('iconet')} />
+        <IconetFrame contentData={iconet} />
       );
     }
 

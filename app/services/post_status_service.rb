@@ -3,6 +3,7 @@
 class PostStatusService < BaseService
   include Redisable
   include LanguagesHelper
+  include Iconet::IconetDecorator
 
   MIN_SCHEDULE_OFFSET = 5.minutes.freeze
 
@@ -63,8 +64,10 @@ class PostStatusService < BaseService
     # The following transaction block is needed to wrap the UPDATEs to
     # the media attachments when the status is created
 
+    attributes = decorate(status_attributes)
+
     ApplicationRecord.transaction do
-      @status = @account.statuses.create!(status_attributes)
+      @status = @account.statuses.create!(attributes)
     end
 
     process_hashtags_service.call(@status)
