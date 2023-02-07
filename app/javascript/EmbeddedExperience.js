@@ -1,7 +1,7 @@
 import EEManifest from './EEManifest';
 
 // CSP that is injected as meta tag into the iframe's srcdoc. The 'default-src' is set dynamically.
-const INLINE_CSP = 'style-src \'unsafe-inline\'; script-src \'unsafe-inline\'; img-src data: blob:; ';
+const INLINE_CSP = `style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data: blob:; `;
 const DEBUG = true;
 
 /**
@@ -20,10 +20,11 @@ export default class EmbeddedExperience extends HTMLElement {
 
   #content = new Map(); // packetType => content
 
-
-  constructor() {
-    super();
+  async connectedCallback() {
     this.#createShadowDom();
+    // Make the SandboxController listen for the initialization message of this iframe
+    window.sandboxController.register(this.#iframe.contentWindow, this);
+
     try {
       const contentDataJson = this.getAttribute('contentData');
       const contentData = JSON.parse(contentDataJson);
@@ -36,11 +37,7 @@ export default class EmbeddedExperience extends HTMLElement {
       return;
     }
 
-    // Make the SandboxController listen for the initialization message of this iframe
-    window.sandboxController.register(this.#iframe.contentWindow, this);
-  }
 
-  async initialize() {
     const compatibleInterpreters = await this.#findInterpreters('application/iconet+html');
     // There might be multiple interpreters that provide an iconet iframe.
     this.#iconetInterpreter = compatibleInterpreters[0];
@@ -186,6 +183,7 @@ export default class EmbeddedExperience extends HTMLElement {
       const baseURL = (this.#iconetInterpreter && !this.#iconetInterpreter.manifest.id.startsWith('/'))
         ? this.#iconetInterpreter.manifest.id
         : window.location;
+      console.warn('Rebasing url', url, 'on baseUrl', baseURL);
       url = new URL(url, baseURL).toString();
     }
 
@@ -197,7 +195,12 @@ export default class EmbeddedExperience extends HTMLElement {
     const text = await response.text();
     if (!(await this.#verifySha512(sha512, text)) && !DEBUG) throw 'Checksum does not match!';
 
-    return asJson ? JSON.parse(text) : text;
+    let json;
+    if (asJson) {
+      json = JSON.parse(text);
+      json['@id'] = url;
+    }
+    return asJson ? json : text;
   }
 
   // From https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest#converting_a_digest_to_a_hex_string
