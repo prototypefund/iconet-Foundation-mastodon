@@ -31,7 +31,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   has_one :preloadable_poll, key: :poll, serializer: REST::PollSerializer
 
   def iconet
-    object.iconet.to_json
+    status_iconet_format(object).to_json
   end
 
   def id

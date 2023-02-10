@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module FormattingHelper
+  def status_iconet_format(status)
+    IconetFormatter.new(status).generate
+  end
+
   def html_aware_format(text, local, options = {})
     HtmlAwareFormatter.new(text, local, options).to_s
   end
