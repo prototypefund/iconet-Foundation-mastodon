@@ -50,7 +50,7 @@ RSpec.describe ActivityPub::FetchRemoteStatusService, type: :service do
           type: 'Note',
           content: 'Lorem ipsum',
           attributedTo: ActivityPub::TagManager.instance.uri_for(sender),
-          'https://iconet-foundation.org/ns#iconet': {iconetKey: "iconet data"},
+          'https://ns.iconet-foundation.org#iconet': {iconetKey: "iconet data"},
         }
       end
 

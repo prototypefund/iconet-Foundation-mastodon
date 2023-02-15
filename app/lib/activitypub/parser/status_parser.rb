@@ -95,7 +95,7 @@ class ActivityPub::Parser::StatusParser
   end
 
   def iconet
-    @object['https://iconet-foundation.org/ns#iconet']
+    @object['https://ns.iconet-foundation.org#iconet']
   end
 
   private

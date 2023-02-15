@@ -89,7 +89,7 @@ class ActivityPub::Activity
 
   def hasIconetField?
     # TODO validate iconet field
-    @object['https://iconet-foundation.org/ns#iconet'].present?
+    @object['https://ns.iconet-foundation.org#iconet'].present?
   end
 
   def delete_arrived_first?(uri)

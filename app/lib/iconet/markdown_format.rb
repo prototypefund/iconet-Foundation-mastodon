@@ -43,14 +43,14 @@ class Iconet::MarkdownFormat < Iconet::Format
   def markdown_template
     {
       # TODO Setting a context makes the json parser look up the (not existing) vocabulary
-      "@context": "https://static.iconet-foundation.org/ns#",
+      "@context": "https://ns.iconet-foundation.org#",
       "@type": "Packet",
       # TODO set @id in note_serializer
       "@id": "localhost:3000/posts/TODO_ID",
       "interpreterManifests": [
         {
           "manifestUri": "http://neta.localhost/iconet/formats/markdown/manifest.json",
-          "inputTypes": ["text/markdown"],
+          "sourceTypes": ["text/markdown"],
           "targetTypes": ["application/iconet+html"],
           "sha-512": "<sha-512 hash of the manifest document linked>"
         }
