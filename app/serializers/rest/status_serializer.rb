@@ -6,8 +6,9 @@ class REST::StatusSerializer < ActiveModel::Serializer
   attributes :id, :created_at, :in_reply_to_id, :in_reply_to_account_id,
              :sensitive, :spoiler_text, :visibility, :language,
              :uri, :url, :replies_count, :reblogs_count,
-             :favourites_count, :edited_at, :iconet
+             :favourites_count, :edited_at
 
+  attribute :iconet, if: :iconet?
   attribute :favourited, if: :current_user?
   attribute :reblogged, if: :current_user?
   attribute :muted, if: :current_user?
@@ -32,6 +33,10 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   def iconet
     status_iconet_format(object).to_json
+  end
+
+  def iconet?
+    !object.iconet.nil?
   end
 
   def id
