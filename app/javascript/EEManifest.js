@@ -26,7 +26,7 @@ export default class EEManifest {
    * @param targetType MIME type
    * @return An array of interpreters that supports the target format.
    */
-  interpreter(targetType) {
+  interpreterDescription(targetType) {
     return this.#interpreters.get(targetType) ?? [];
   }
 
@@ -37,8 +37,8 @@ export default class EEManifest {
   constructor(manifest) {
     this.#manifest = manifest;
     manifest.interpreters.forEach(inter => {
-          const list = this.interpreter(inter.targetType);
-          list.push(new Interpreter(inter, this));
+          const list = this.interpreterDescription(inter.targetType);
+          list.push(new InterpreterDescription(inter, this));
           this.#interpreters.set(inter.targetType, list);
         },
     );
@@ -63,7 +63,7 @@ export default class EEManifest {
 }
 
 
-export class Interpreter {
+export class InterpreterDescription {
 
   #manifest
   #interpreter
@@ -84,7 +84,7 @@ export class Interpreter {
   }
 
   get allowedSources() {
-    return this.#interpreter.permissions.allowedSources ?? [];
+    return this.#interpreter.permissions?.allowedSources ?? [];
   }
 
   get manifest() {

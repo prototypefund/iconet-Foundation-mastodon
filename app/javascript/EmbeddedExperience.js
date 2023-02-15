@@ -42,7 +42,8 @@ export default class EmbeddedExperience extends HTMLElement {
     // There might be multiple interpreters that provide an iconet iframe.
     this.#iconetInterpreter = compatibleInterpreters[0];
     if (!this.#iconetInterpreter) {
-      this.#info.textContent = 'No interpreters of targetType \'application/iconet+html\' found.';
+      console.warn('Falling back to text/plain');
+      this.#info.textContent = this.#content.get('text/plain') ?? 'Ony targetType \'application/iconet+html\' and \'text/plain\' supported.';
       return;
     }
     this.#info.textContent = `Interpreter: ${this.#iconetInterpreter.id}`;
@@ -50,23 +51,22 @@ export default class EmbeddedExperience extends HTMLElement {
   }
 
   /**
-   * Returns an array of interpreter, that can convert one of the packetTypes in the content to the desired targetType..
+   * Returns an array of interpreters, that can convert one of the packetTypes in the content to the desired targetType.
    * @param targetType mime type as string
    */
   async #findInterpreters(targetType) {
     return (await Promise.all(this.#interpreterManifests
-      .filter(manifest => manifest.targetTypes.includes(targetType))
-      .map(async manifest => {
-        let interpreters;
-        try {
-          const manifestJson = await this.#fetchResource(manifest.manifestUri, manifest['sha-512'], true);
-          const eeManifest = EEManifest.fromJson(manifestJson);
-          interpreters = eeManifest.interpreter(targetType).filter(i => this.#content.has(i.sourceType));
-        } catch (e) {
-          console.warn('Could not load manifest from', manifest.manifestUri, e);
-        }
-        return interpreters;
-      }),
+        .filter(manifestDescription => manifestDescription.targetTypes.includes(targetType))
+        .map(async manifestDescription => {
+          let interpreters;
+          try {
+            const eeManifest = await this.#fetchManifest(manifestDescription);
+            interpreters = eeManifest.interpreterDescription(targetType).filter(i => this.#content.has(i.sourceType));
+          } catch (e) {
+            console.warn('Could not load manifest from', manifestDescription.manifestUri, e);
+          }
+          return interpreters;
+        }),
     )).flat();
   }
 
@@ -176,6 +176,12 @@ export default class EmbeddedExperience extends HTMLElement {
   }
 
 
+  async #fetchManifest(manifestDescription) {
+    const manifestJson = await this.#fetchResource(manifestDescription.manifestUri, manifestDescription['sha-512'], true);
+    return EEManifest.fromJson(manifestJson);
+  }
+
+
   async #fetchResource(url, sha512, asJson = false) {
     // TODO Debugging hack to interpret relative paths relative to the manifest id or the current host.
     // TODO Remove this and only use absolute paths.
@@ -183,7 +189,7 @@ export default class EmbeddedExperience extends HTMLElement {
       const baseURL = (this.#iconetInterpreter && !this.#iconetInterpreter.manifest.id.startsWith('/'))
         ? this.#iconetInterpreter.manifest.id
         : window.location;
-      console.warn('Rebasing url', url, 'on baseUrl', baseURL);
+      console.warn('Rebasing relative url', url, 'onto baseUrl', baseURL);
       url = new URL(url, baseURL).toString();
     }
 
@@ -195,6 +201,7 @@ export default class EmbeddedExperience extends HTMLElement {
     const text = await response.text();
     if (!(await this.#verifySha512(sha512, text)) && !DEBUG) throw 'Checksum does not match!';
 
+    // TODO To support relative paths, we need to overwrite the @id field
     let json;
     if (asJson) {
       json = JSON.parse(text);
