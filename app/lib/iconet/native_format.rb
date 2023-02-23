@@ -24,7 +24,7 @@ class Iconet::NativeFormat < Iconet::Format
       "@id": "localhost:3000/posts/TODO_ID",
       "interpreterManifests": [
         {
-          "manifestUri": "http://neta.localhost/iconet/formats/mastodon-toot/manifest.json",
+          "manifestUri": "https://bridge.localhost/interpreters/mastodon-toot/manifest.json",
           "sourceTypes": ["application/mastodontoot"],
           "targetTypes": ["application/iconet+html"],
           "sha-512": "<sha-512 hash of the manifest document linked>"

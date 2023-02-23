@@ -49,7 +49,7 @@ class Iconet::MarkdownFormat < Iconet::Format
       "@id": "localhost:3000/posts/TODO_ID",
       "interpreterManifests": [
         {
-          "manifestUri": "http://neta.localhost/iconet/formats/markdown/manifest.json",
+          "manifestUri": "https://bridge.localhost/interpreters/markdown/manifest.json",
           "sourceTypes": ["text/markdown"],
           "targetTypes": ["application/iconet+html"],
           "sha-512": "<sha-512 hash of the manifest document linked>"
