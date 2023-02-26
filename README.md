@@ -1,3 +1,25 @@
+# Mastodon with iconet Extension
+
+Mastodon is a micro blogging service that supports [ActivityPub](https://activitypub.rocks/).
+
+As a proof-of-concept, we added [iconet-specific metadata](https://docs.iconet-foundation.org/en/latest/specification.html#required-iconet-meta-data) to status objects.
+
+This fork can receive [ActivityPub](https://www.w3.org/TR/activitypub/)-formatted objects with iconet metadata and utilize it to render a fallback presentation. Such objects can be sent with our [Funkwhale fork](https://codeberg.org/iconet-Foundation/funkwhale) or with our custom prototype, [NetA](https://codeberg.org/iconet-Foundation/prototype-ExampleNetA) with packets being transported via a [bridge](https://codeberg.org/iconet-Foundation/bridge).
+
+All outgoing activities of this instance append the iconet metadata. Currently, fallback presentations for native mastodon toots and markdown formatted text are implemented.
+
+For the current state of the iconet spec, check [our readthedocs](https://docs.iconet-foundation.org).
+
+
+---
+
+![](http://iconet-foundation.org/images/BMBF_en.png)
+
+From September 2022 to February 2023 this project received funding
+from the German Ministry of Education and Research.
+
+---
+
 <h1><picture>
   <source media="(prefers-color-scheme: dark)" srcset="./lib/assets/wordmark.dark.png?raw=true">
   <source media="(prefers-color-scheme: light)" srcset="./lib/assets/wordmark.light.png?raw=true">
