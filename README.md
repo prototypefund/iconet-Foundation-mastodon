@@ -10,6 +10,25 @@ All outgoing activities of this instance append the iconet metadata. Currently, 
 
 For the current state of the iconet spec, check [our readthedocs](https://docs.iconet-foundation.org).
 
+## Screenshots
+
+<figure>
+    <img src="./lib/assets/funkwhaleInMastodon.png?raw=true"
+         alt="This instance can play Funkwhale audio tracks that contain iconet metadata.">
+    <figcaption>This instance can play Funkwhale audio tracks that contain iconet metadata.</figcaption>
+</figure>
+
+<figure>
+    <img src="./lib/assets/screenshotMastodonMarkdown.png?raw=true"
+         alt="Mastodon toot with markdown formatted text.">
+    <figcaption>Mastodon toot with markdown formatted text.</figcaption>
+</figure>
+
+<figure>
+    <img src="./lib/assets/screenshotMastodonNeta.png?raw=true"
+         alt="An example network that embeds a toot via fallback iframe.">
+    <figcaption>An example network that embeds a toot via fallback iframe.</figcaption>
+</figure>
 
 ---
 
