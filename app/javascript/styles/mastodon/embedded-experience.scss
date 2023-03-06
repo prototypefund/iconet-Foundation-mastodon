@@ -1,6 +1,6 @@
 embedded-experience {
   width: calc(100% - 4em);
-  height: 15em;
+  min-height: 20em;
 
   margin: 2em;
   padding: 0.5em;
@@ -9,5 +9,7 @@ embedded-experience {
   background: whitesmoke;
   overflow: auto;
   resize: both;
-  color: black;
+
+  color: #777;
+  font-size: 0.8em;
 }
